@@ -83,13 +83,6 @@ on property:service.adb.tcp.port=-1
     stop adbd
     start adbd
 
-# Compcache - handle at boot
-service compcache /system/bin/handle_compcache
-    class main
-    user root
-    group root
-    oneshot
-
 service postinit /sbin/ext/post-init.sh
     class core
     user root
