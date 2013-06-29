@@ -1,0 +1,27 @@
+#!/sbin/busybox sh
+
+if [ "a$2" != "a" ]; then
+	usb_mode=$2;
+
+	case "${usb_mode}" in
+		default)
+			# nothing to do here
+		;;
+		mass_storage-adb)
+			setprop sys.usb.config mass_storage,adb;
+			setprop persist.sys.usb.config mass_storage,adb;
+			setprop sys.usb.state mass_storage,adb;
+		;;
+		mtp-adb)
+			setprop sys.usb.config mtp,adb;
+			setprop persist.sys.usb.config mtp,adb;
+			setprop sys.usb.state mtp,adb;
+		;;
+		*)
+			usb_mode="default";
+		;;
+	esac;
+fi;
+
+echo "${usb_mode}";
+

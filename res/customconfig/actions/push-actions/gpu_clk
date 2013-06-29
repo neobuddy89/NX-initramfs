@@ -1,0 +1,8 @@
+#!/sbin/busybox sh
+
+GPU_CLK=`cat /sys/module/mali/parameters/mali_gpu_clk`;
+GPU_VOL=`cat /sys/module/mali/parameters/mali_gpu_vol`;
+GPU_UTO=`cat /sys/module/mali/parameters/mali_gpu_utilization_timeout`;
+echo "Current GPU Frequency: $GPU_CLK MHz";
+echo "Current GPU Voltage: $GPU_VOL";
+echo "GPU Utilization Timeout: $GPU_UTO MSec";

@@ -1,0 +1,22 @@
+#!/sbin/busybox sh
+
+if [ -f /cache/recovery/mounter ] && [ -f /cache/recovery/extendedcommand ];
+   then
+     sed "s%/sbin/ext/busybox rm /cache/recovery/mounter%%" -i /cache/recovery/mounter;
+     sed "s%/sbin/ext/busybox%/sbin/busybox%" -i /cache/recovery/mounter;
+     /sbin/busybox echo "/sbin/busybox umount /sdcard" >> /cache/recovery/mounter;
+     /sbin/busybox echo "/sbin/busybox mount /dev/block/mmcblk1p1 /sdcard" >> /cache/recovery/mounter;
+     /sbin/busybox echo "/sbin/busybox rm /cache/recovery/mounter" >> /cache/recovery/mounter;
+
+     echo 'run_program("/cache/recovery/mounter");'>/cache/recovery/new_extendedcommand;
+     while read line;
+     do 
+       if [ ! "$line" = 'run_program("/cache/recovery/mounter");' ];
+          then echo -e "$line\n">>/cache/recovery/new_extendedcommand;
+       fi;
+     done < /cache/recovery/extendedcommand;
+
+     /sbin/busybox rm /cache/recovery/extendedcommand;
+     /sbin/busybox mv /cache/recovery/new_extendedcommand /cache/recovery/extendedcommand;
+fi;
+

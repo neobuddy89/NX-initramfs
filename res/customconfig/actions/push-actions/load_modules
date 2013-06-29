@@ -1,0 +1,51 @@
+#!/sbin/busybox sh
+(
+	# order of modules load is important
+	if [ "$j4fs_module" == "on" ]; then
+		echo "Loading J4FS Module" >> /data/nx_modules.log;
+		$BB insmod /lib/modules/j4fs.ko >> /data/nx_modules.log 2>&1;
+		$BB mount -t j4fs /dev/block/mmcblk0p4 /mnt/.lfs
+	fi;
+	insmod /lib/modules/Si4709_driver.ko;
+
+	if [ "$usbserial_module" == "on" ]; then
+		insmod /lib/modules/usbserial.ko;
+		insmod /lib/modules/ftdi_sio.ko;
+		insmod /lib/modules/pl2303.ko;
+	else
+		rmmod pl2303.ko;
+		rmmod ftdi_sio.ko;
+		rmmod usbserial.ko;
+	fi;
+	if [ "$usbnet_module" == "on" ]; then
+		insmod /lib/modules/usbnet.ko;
+		insmod /lib/modules/asix.ko;
+	else
+		rmmod asix.ko;
+		rmmod usbnet.ko;
+	fi;
+	if [ "$cifs_module" == "on" ]; then
+		insmod /lib/modules/cifs.ko;
+	else
+		rmmod cifs.ko;
+	fi;
+	if [ "$eds_module" == "on" ]; then
+		insmod /lib/modules/eds.ko;
+	else
+		rmmod eds.ko;
+	fi;
+	if [ "$xpad_module" == "on" ]; then
+		insmod /lib/modules/ff-memless.ko;
+		insmod /lib/modules/xpad.ko;
+	else
+		rmmod xpad.ko;
+		rmmod ff-memless.ko;
+	fi;
+	lsmod > /data/.nx_modules 2>&1;
+	LMOD=`cat /data/.nx_modules`;
+	echo "Loaded Modules:";
+	echo " ";
+	echo "$LMOD";
+	rm -f /data/.nx_modules > /dev/null 2>&1;
+
+)&

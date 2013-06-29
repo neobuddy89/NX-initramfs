@@ -1,0 +1,26 @@
+#!/sbin/busybox sh
+
+touch /tmp/gpu_monitor;
+if [ `pgrep -f push-actions/start_gpu_monitor |  wc -l` \< 3 ]; then
+
+	echo "Starting GPU MONITOR...";
+	echo "Generating report...";
+	echo "Tap on STOP to complete report generation!";
+(
+	rm -rf /data/nx_gpu.log;
+	touch /data/nx_gpu.log;
+	while [ -e /tmp/gpu_monitor ]; do		
+		sleep 2;
+		echo "----------------------------------" >> /data/nx_gpu.log;
+		date >> /data/nx_gpu.log;
+		GPU_CLK=`cat /sys/module/mali/parameters/mali_gpu_clk`;
+		GPU_VOL=`cat /sys/module/mali/parameters/mali_gpu_vol`;
+		echo "GPU Frequency: $GPU_CLK MHz" >> /data/nx_gpu.log;
+		echo "GPU Voltage: $GPU_VOL" >> /data/nx_gpu.log;
+	done
+)&
+else
+	# Anti smart user protection! multi run of this script will bring HELL!
+	echo "You are running GPU MONITOR already!";
+	echo "Tap on STOP to complete report generation!";
+fi;

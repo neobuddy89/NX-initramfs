@@ -1,0 +1,19 @@
+#!/sbin/busybox sh
+
+if [ `pgrep -f push-actions/stop_gpu_monitor |  wc -l` \< 3 ]; then
+(
+	if [ -e /tmp/gpu_monitor ]; then
+		rm -rf /tmp/gpu_monitor;
+		echo "Stopped GPU Frequency Monitor";
+		echo "Check /data/nx_gpu.log for report";
+		echo "Implemented by NeoBuddy89";
+		sleep 3;
+		echo "----------------------------------" >> /data/nx_gpu.log;
+	else
+		echo "Start GPU Monitor First!!";
+		if [ -e /data/nx_gpu.log ]; then
+			echo "Check /data/nx_gpu.log for previous report";
+		fi;
+	fi;
+)&
+fi;

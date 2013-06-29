@@ -1,0 +1,755 @@
+<settingsRoot>
+<settingsTab name="CPU Control">
+	<settingsPane description="Experimental: Enable below AUTOPLUG mode to let cortexbrain control CPU cores dynamically. When screen on, dynamic mode will be utilized which means second core turns on only when required. When screen off, single core mode will be utilized which means second core will be turned off forcefully. Keep this mode on for power save." name="CPU Core Control">
+		<checkbox description="Enable/Disable the CPU Core AUTOPLUG Mode! (Dynamic by Cortex)" name="CPU AutoPlug" action="generic_cortex /tmp/cortexbrain_autoplug" label="CPU AutoPlug"/>
+	</settingsPane>
+
+	<settingsPane description="You can change max and min frequencies of your device here. 800 MHz is minimum limit of max frequency as below this frequency your device will suffer from high performance degradation. 800 MHz is also maximum limit of min frequency as above this frequency your device will not cool down. (Default: Max 1400 MHz, Min 200 MHz)" name="CPU Frequency control">
+
+		<seekBar description="This slider sets maximum frequency of your device." name="Max CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq" unit="kHz" min="800000" reversed="false" step="100000" max="1600000"/>
+
+		<seekBar description="This slider sets minimum frequency of your device." name="Min CPU Frequency" action="genericfreq /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq" unit="kHz" min="100000" reversed="false" step="100000" max="800000"/>
+
+	</settingsPane>
+
+	<settingsPane description="You can change CPU governor of your device here. Hyper governor is highly tweaked Ondemand governor which will give you best performance with little impact on battery juice while AbyssPlug is tweaked hotplug governor which is more precise scaling down CPU performance when not in need. NeoX is combined ondemand and pegausq governor. (Default: Hyper)" name="CPU Governor control">
+		<spinner description="This will set the active CPU governor." name="Default CPU Governor" action="generic /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor">
+			<spinnerItem name="Hyper" value="HYPER"/> 
+			<spinnerItem name="NeoX" value="NeoX"/>
+			<spinnerItem name="Zzmoove" value="zzmoove"/>
+			<spinnerItem name="Lulzactiveq" value="lulzactiveq"/>
+			<spinnerItem name="IntelliDemand" value="intellidemand"/>
+			<spinnerItem name="Nightmare" value="nightmare"/>
+			<spinnerItem name="SmartAssV2" value="smartassV2"/>
+			<spinnerItem name="Hydrxq" value="hydrxq"/>
+			<spinnerItem name="Performance" value="performance"/>
+			<spinnerItem name="AssWax" value="asswax"/>
+			<spinnerItem name="SavagedZen" value="savagedzen"/>
+			<spinnerItem name="Conservative" value="conservative"/>
+			<spinnerItem name="Adaptive" value="adaptive"/>
+			<spinnerItem name="Lagfree" value="lagfree"/>
+			<spinnerItem name="PowerSave" value="powersave"/>
+			<spinnerItem name="UserSpace" value="userspace"/>
+		</spinner>
+		<spinner description="This will set the standby and sleep CPU governor. (Dynamic by cortex)" name="Sleep CPU Governor" action="generic_cortex /tmp/scaling_governor_sleep">
+			<spinnerItem name="Hyper" value="HYPER"/> 
+			<spinnerItem name="NeoX" value="NeoX"/>
+			<spinnerItem name="Zzmoove" value="zzmoove"/>
+			<spinnerItem name="Lulzactiveq" value="lulzactiveq"/>
+			<spinnerItem name="IntelliDemand" value="intellidemand"/>
+			<spinnerItem name="Nightmare" value="nightmare"/>
+			<spinnerItem name="SmartAssV2" value="smartassV2"/>
+			<spinnerItem name="Hydrxq" value="hydrxq"/>
+			<spinnerItem name="Performance" value="performance"/>
+			<spinnerItem name="AssWax" value="asswax"/>
+			<spinnerItem name="SavagedZen" value="savagedzen"/>
+			<spinnerItem name="Conservative" value="conservative"/>
+			<spinnerItem name="Adaptive" value="adaptive"/>
+			<spinnerItem name="Lagfree" value="lagfree"/>
+			<spinnerItem name="PowerSave" value="powersave"/>
+			<spinnerItem name="UserSpace" value="userspace"/> 
+		</spinner>
+	</settingsPane>
+
+	<settingsPane description="You can change CPU IO scheduler of your device here. For best stability use ROW. (Default: ROW)" name="CPU IO Scheduler control">
+		<spinner description="This will set the default IO scheduler for internal, system, data and external sdcard." name="Default IO Scheduler" action="generic /sys/block/mmcblk0/queue/scheduler">
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/>
+			<spinnerItem name="BFQ" value="bfq"/> 
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="Deadline" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/>
+		</spinner>
+		<spinner description="This will set the standby and sleep IO scheduler for internal, system, data and external sdcard. (Dynamic by cortex)" name="Sleep IO Scheduler" action="generic_cortex /tmp/sleep_scheduler">
+			<spinnerItem name="ROW" value="row"/> 
+			<spinnerItem name="SIO" value="sio"/>
+			<spinnerItem name="BFQ" value="bfq"/> 
+			<spinnerItem name="CFQ" value="cfq"/> 
+			<spinnerItem name="Deadline" value="deadline"/> 
+			<spinnerItem name="NOOP" value="noop"/> 
+			<spinnerItem name="VR" value="vr"/> 
+			<spinnerItem name="ZEN" value="zen"/>
+		</spinner>
+	</settingsPane>
+
+	<settingsPane description="Here, you can set all the settings for power saving! Between screen off and deep sleep states, there are some idle modes supported by cpuidle driver. They are IDLE aka Normal Idle, LPA aka Deep Idle and AFTR aka ARM Off Top Running. Race to idle by CPU is implemented for power management. Recommended for power saving is to enable AFTR and LPA. For best stability use Idle + LPA. (Default: AFTR + LPA)" name="CPU Idle and Power Settings">
+
+		<spinner description="Sets the CPU Idle Mode." name="CPU Idle Mode" action="generic /sys/module/cpuidle_exynos4/parameters/enable_mask">
+			<spinnerItem name="AFTR + LPA" value="3"/> 
+			<spinnerItem name="Idle + LPA" value="2"/> 
+			<spinnerItem name="AFTR only" value="1"/> 
+			<spinnerItem name="Idle only" value="0"/> 
+		</spinner>
+
+		<spinner description="Sets the CPU Idle (Sleep) Mode. (Dynamic by cortex)" name="CPU Idle (Sleep) Mode" action="generic_cortex /tmp/enable_mask_sleep">
+			<spinnerItem name="AFTR + LPA" value="3"/> 
+			<spinnerItem name="Idle + LPA" value="2"/> 
+			<spinnerItem name="AFTR only" value="1"/> 
+			<spinnerItem name="Idle only" value="0"/> 
+		</spinner>
+
+		<seekBar description="This is for CPU BUS-FREQ UP-FREQ-Scaling based on CPU load. It sets the load threshold on which BUS frequency will rise. (Default: 25%)" name="busfreq_up_threshold" action="generic /sys/devices/system/cpu/cpufreq/busfreq_up_threshold" unit="%" min="20" reversed="false" step="5" max="90"/>
+	</settingsPane>
+
+</settingsTab>
+<settingsTab name="GPU Stats">
+	<settingsPane description="You can check what frequency the GPU is at right now." name="Current GPU Frequency">
+
+		<button description="This displays current GPU frequency." name="GPU Frequency Check" action="push-actions/gpu_clk" label="GPU Frequency Check"/>
+
+	</settingsPane>
+
+	<settingsPane description="You can monitor what frequency the GPU is running at." name="GPU Frequency Monitor">
+
+		<button description="Tap here to start monitoring." name="Start GPU Frequency Monitor" action="push-actions/start_gpu_monitor" label="Start GPU Frequency Monitor"/>
+
+		<button description="Tap here to stop monitoring." name="Stop GPU Frequency Monitor" action="push-actions/stop_gpu_monitor" label="Stop GPU Frequency Monitor"/>
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="GPU Control">
+
+	<settingsPane description="GPU frequency/voltage/steps/utilization settings. Default frequencies are 134, 160, 200, 267, 267. Default voltages are 950, 950, 1000, 1050, 1050." 
+			name="GPU Control">
+
+		<seekBar description="Here, you can change GPU utilization timeout calculation. Closer to 100ms (0.1sec) = faster GPU response in steps jump on load, more battery drain. CM10 default: 1000 (1sec)"
+			name="GPU Utilization Timeout" action="generic /sys/module/mali/parameters/mali_gpu_utilization_timeout"
+			unit="MSec" min="100" reversed="false" step="50" max="1000"/>
+
+		<spinner description="Changes the first (lowest) GPU frequency step." name="GPU Frequency Step 1" action="gpu-freq 1">
+			<spinnerItem name="267 MHz" value="267"/> 
+			<spinnerItem name="200 MHz" value="200"/> 
+			<spinnerItem name="160 MHz" value="160"/> 
+			<spinnerItem name="134 MHz" value="134"/>
+			<spinnerItem name="100 MHz" value="100"/>
+			<spinnerItem name="80 MHz" value="80"/>
+			<spinnerItem name="50 MHz" value="50"/>
+		</spinner>
+
+		<spinner description="Changes the second GPU frequency step." name="GPU Frequency Step 2" action="gpu-freq 2">
+			<spinnerItem name="400 MHz" value="400"/> 
+			<spinnerItem name="267 MHz" value="267"/> 
+			<spinnerItem name="200 MHz" value="200"/> 
+			<spinnerItem name="160 MHz" value="160"/> 
+			<spinnerItem name="134 MHz" value="134"/> 
+			<spinnerItem name="100 MHz" value="100"/>
+			<spinnerItem name="100 MHz" value="100"/> 
+			<spinnerItem name="80 MHz" value="80"/>
+		</spinner>
+
+		<spinner description="Changes the third GPU frequency step." 
+			name="GPU Frequency Step 3" action="gpu-freq 3">
+			<spinnerItem name="400 MHz" value="400"/> 
+			<spinnerItem name="267 MHz" value="267"/> 
+			<spinnerItem name="200 MHz" value="200"/> 
+			<spinnerItem name="160 MHz" value="160"/> 
+			<spinnerItem name="134 MHz" value="134"/> 
+			<spinnerItem name="100 MHz" value="100"/>
+		</spinner>
+
+		<spinner description="Changes the fourth GPU frequency step. WARNING! 400 MHz needs more than 1000 mV." 
+			name="GPU Frequency Step 4" action="gpu-freq 4">
+			<spinnerItem name="400 MHz" value="400"/> 
+			<spinnerItem name="267 MHz" value="267"/> 
+			<spinnerItem name="200 MHz" value="200"/> 
+			<spinnerItem name="160 MHz" value="160"/> 
+		</spinner>
+
+		<spinner description="Changes the fifth GPU frequency step. WARNING! 400 MHz needs more than 1000 mV." 
+			name="GPU Frequency Step 5" action="gpu-freq 5">
+			<spinnerItem name="400 MHz" value="400"/> 
+			<spinnerItem name="267 MHz" value="267"/> 
+			<spinnerItem name="200 MHz" value="200"/> 
+		</spinner>
+
+	</settingsPane>
+
+	<settingsPane description="GPU Voltage Levels: The defaults are 950, 950, 1000, 1050, 1050. WARNING! Voltage above 1300 mV can be dangerous! Do not blame me if GPU chip gets burned." 
+			name="GPU Voltage Levels">
+
+		<seekBar description="GPU voltage for the first step" 
+			name="GPU Voltage Level 1" action="gpu-voltage 1" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+
+		<seekBar description="GPU voltage for the second step" 
+			name="GPU Voltage Level 2" action="gpu-voltage 2" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+
+		<seekBar description="GPU voltage for the third step" 
+			name="GPU Voltage Level 3" action="gpu-voltage 3" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+
+		<seekBar description="GPU voltage for the fourth step" 
+			name="GPU Voltage Level 4" action="gpu-voltage 4" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+
+		<seekBar description="GPU voltage for the fifth step" 
+			name="GPU Voltage Level 5" action="gpu-voltage 5" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+
+	</settingsPane>
+
+	<settingsPane description="GPU load thresholds to change between frequency steps." name="GPU Thresholds">
+
+		<seekBar description="GPU threshold to jump up from first to second step" 
+			name="GPU Threshold 1-UP" action="gpu-thresh 1UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump down from second to first step" 
+			name="GPU Threshold 2-DOWN" action="gpu-thresh 2DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump up from second to third step" 
+			name="GPU Threshold 2-UP" action="gpu-thresh 2UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump down from third to second step" 
+			name="GPU Threshold 3-DOWN" action="gpu-thresh 3DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump up from third to fourth step" 
+			name="GPU Threshold 3-UP" action="gpu-thresh 3UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump down from fourth to third step" 
+			name="GPU Threshold 4-DOWN" action="gpu-thresh 4DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump up from fourth to fifth step" 
+			name="GPU Threshold 4-UP" action="gpu-thresh 4UP" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<seekBar description="GPU threshold to jump down from fifth to fourth step" 
+			name="GPU Threshold 5-DOWN" action="gpu-thresh 5DOWN" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name="Memory Control">
+
+	<settingsPane description="Here, you can tune memory and OOM (Out of Memory killer - low memory management) settings managed by the kernel." name="Memory Tuning">
+
+		<spinner description="Here, you can set the OOM level by kernel LowMemKiller function. More aggressive = more free RAM, more killed apps."
+			name="OOM Level Tuning - screen on" action="oom_config_screen_on">
+			<spinnerItem name="Low" value="low"/> 
+			<spinnerItem name="Medium" value="medium"/> 
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Aggressive" value="aggressive"/> 
+			<spinnerItem name="Exterminate" value="exterminate"/> 
+		</spinner>
+
+		<spinner description="Here, you can set the OOM level by kernel LowMemKiller function. More aggressive = more free RAM, more killed apps."
+			name="OOM Level Tuning - screen off" action="oom_config_screen_off">
+			<spinnerItem name="Low" value="low"/> 
+			<spinnerItem name="Medium" value="medium"/> 
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Aggressive" value="aggressive"/> 
+			<spinnerItem name="Exterminate" value="exterminate"/> 
+		</spinner>
+
+		<seekBar description="Dirty background memory buffer. Higher value = more memory will be used for write buffer for background operations. Buffer is released when RAM needs to be freed (Default: 10%)"
+			name="Dirty Background ratio" action="generic /proc/sys/vm/dirty_background_ratio" unit="%" min="5" reversed="false" step="5" max="80"/>
+
+		<seekBar description="Dirty real time memory buffer. Higher value = more memory will be used for write buffer for real time operations. Buffer is released when RAM needs to be freed (Default: 15%)"
+			name="Dirty ratio" action="generic /proc/sys/vm/dirty_ratio" unit="%" min="5" reversed="false" step="5" max="90"/>
+
+		<button description="Clean RAM cache. This will release all cached and buffered RAM" name="CLEAN RAM CACHE" action="push-actions/clean_ram_cache" label="Clean RAM Cache"/>
+
+		<spinner description="ZRAM Module settings. Here, you can enable/disable ZRAM or add more compressed RAM for your system. (Default: 100 MB)" name="ZRAM Settings" action="zramtweaks">
+			<spinnerItem name="Set ZRAM to 50 MB" value="1"/> 
+			<spinnerItem name="Set ZRAM to 100 MB" value="2"/> 
+			<spinnerItem name="Set ZRAM to 200 MB" value="3"/> 
+			<spinnerItem name="Turn ZRAM off!" value="4"/> 
+		</spinner>
+
+		<spinner description="If you have enabled swap, higher number = the more the system will swap. Keeping swappiness '0' means swapping occurs only when your device runs out of memory, increasing swappiness will result more battery consumption. Please note SWAP is effective only if ZRAM is not off.(Default: 0)"
+			name="swappiness" action="generic /proc/sys/vm/swappiness">
+			<spinnerItem name="0" value="0"/> 
+			<spinnerItem name="10" value="10"/> 
+			<spinnerItem name="20" value="20"/> 
+			<spinnerItem name="30" value="30"/> 
+			<spinnerItem name="40" value="40"/> 
+			<spinnerItem name="50" value="50"/> 
+			<spinnerItem name="60" value="60"/> 
+			<spinnerItem name="70" value="70"/> 
+			<spinnerItem name="80" value="80"/> 
+			<spinnerItem name="90" value="90"/> 
+			<spinnerItem name="100" value="100"/> 
+		</spinner>
+
+		<button description="ZRAM state check" name="ZRAM STATS" action="push-actions/zramstats" label="ZRAM Stats"/>
+
+		<checkbox description="Enable/Disable 'Ultra KSM Control'. This will merge some memory but consumes more CPU and battery. This depends on Cortex Brain, so you will have to stop and start the service or reboot your phone." name="Ultra KSM Control" action="generic_cortex /tmp/cortexbrain_uksm_control" label="Ultra KSM Control"/>
+
+		<button description="Ultra KSM state check" name="Ultra KSM STATS" action="push-actions/uksmstats" label="Ultra KSM Stats"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+<settingsTab name ="Charging Currents Control">
+<settingsPane description="Here, you can set the current intensity (measured in milliamperes) you want your phone to take in while charging. Allowed mA, by default, is between 450 mA and 650 mA! Remember: higher currents *could potentially* reduce battery life over time. So, the higher the currents = more chances your battery life will decay during a period of time. The lower the currents = less chances your battery will decay during that period of time. Set currents higher WHEN AND IF you need your phone to charge faster. Turn currents down to 450 mA when you are charging overnight. Charging at 1000 mA will take 2 hours and 30 minutes. Charging at 450 mA will take up to 6 hours." name="Battery Charge">
+
+		<seekBar description="AC (wall) charger currents" 
+			name="AC (wall) charge currents" action="chargecurrent 1" 
+                        unit="mA" min="450" reversed="false" step="50" max="1000"/>
+
+		<seekBar description="MISC charge currents" 
+			name="MISC charge Current" action="chargecurrent 2" 
+			unit="mA" min="450" reversed="false" step="50" max="1000"/>
+
+		<seekBar description="USB charge currents" 
+			name="USB charge currents" action="chargecurrent 3" 
+			unit="mA" min="450" reversed="false" step="50" max="1000"/>
+
+		<button description="If you think that the fuel gauge chip is behaving weird, use this button to reset it. Afterwards, give it a few hours to stabilize. It may still show you funny values until it settles, but once it settled, the battery percentage should be fine." name="Reset Fuel-Gauge Chip" action="push-actions/reset-fuelgauge" label="Reset Fuel-Gauge Chip"/>
+
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Screen Control">
+
+	<settingsPane description="Here, you can fine tune touch screen specific settings. More settings may be added later." name="Touch Screen Tuning">
+
+	<seekBar description="This tunes touch panel sensitivity. Lower values = smoother, but your screen may start running ahead of your finger - ghost touch. (CM default: 50, NX default: 30)" name="Touch Sensitivity" action="generic /sys/class/sec/sec_touchscreen/tsp_threshold" unit="" min="10" reversed="false" step="5" max="90"/>
+
+	<spinner description="Select preferred hand for S Pen usage. (Default: Right-Handed)" name="Preferred Hand for S Pen" action="generic /sys/class/sec/sec_epen/epen_hand">
+			<spinnerItem name="Right-Handed" value="1"/> 
+			<spinnerItem name="Left-Handed" value="0"/> 
+	</spinner>
+
+	<seekBar description="Vibration (haptic feedback) force level. To test vibration force, simply press the physical menu button. (Default: 75)" name="Vibration force" action="generic /sys/vibrator/pwm_val" unit="%" min="0" reversed="false" step="5" max="100"/>
+
+		<checkbox description="LCD Power Reduce for backlight. If you like brighter screen in cost of battery drain, then turn it off. (Default: On)"
+			name="LCD POWER" action="generic01 /sys/class/lcd/panel/power_reduce" label="LCD Power Reduce"/>
+
+	</settingsPane>
+    <settingsPane description="mobile Digital Natural Image engine control. Samsungs hardware image post-processor controls virtually any image manipulation. mDNIe settings of the device must be selected from here, not Advanced Device Settings."
+		  name="Global controls">
+		<spinner description="Sets the scenario for mDNIe. (Default: UI)" name="mDNIe scenario" action="generic /sys/class/mdnie/mdnie/scenario">
+			<spinnerItem name="CyanogenMod" value="0"/>
+			<spinnerItem name="UI" value="1"/>
+			<spinnerItem name="Video" value="2"/>
+			<spinnerItem name="Video Warm" value="3"/>
+			<spinnerItem name="Video Cold" value="4"/>
+			<spinnerItem name="Camera" value="5"/>
+			<spinnerItem name="Navigation" value="6"/>
+			<spinnerItem name="Gallery" value="7"/>
+			<spinnerItem name="VT" value="8"/>
+		</spinner>
+		<spinner description="Sets the mode for mDNIe. (Default: Dynamic)" name="mDNIe mode" action="generic /sys/class/mdnie/mdnie/mode">
+			<spinnerItem name="Dynamic" value="0"/> 
+			<spinnerItem name="Standard" value="1"/>
+			<spinnerItem name="Natural" value="2"/>
+			<spinnerItem name="Movie" value="3"/>
+		</spinner>
+		<spinner description="Enable/Disable Inverted colors. (Default: Normal)" name="mDNIe Negative mode" action="generic /sys/class/mdnie/mdnie/negative">
+			<spinnerItem name="Normal" value="0"/> 
+			<spinnerItem name="Inverted" value="1"/>
+		</spinner>
+		<spinner description="Enable/Disable Outdoor Mode. (Default: Off)" name="mDNIe Outdoor mode" action="generic /sys/class/mdnie/mdnie/outdoor">
+			<spinnerItem name="Off" value="0"/> 
+			<spinnerItem name="On" value="1"/>
+		</spinner>
+
+      <checkbox  description="Register intercept acts like a hook and will enable catching scenario settings and modifying them through delta controls. PLEASE NOTE if a scenario does not have a setting (register) in its base sequence, then it cannot be modified by the hook. The register hook, while used on Samsung's profiles, is not capable to alter effects which are not integrated in that screen profile's value sequence, the 'Movie' profile for example lacks some effects present in the 'Dynamic' profile. The same is valid when having different scenarios, the 'Camera' scenario will use different effects in its base than the 'UI' scenario. "
+                name="Register intercept" 
+                action="generic01 /sys/class/misc/mdnie/hook_intercept"
+                label="Enable register hook"/>
+
+      <checkbox  description="Enabling the master sequence will disable and ignore mDNIe profiles and scenarios, even below controls will be disabled. Master sequence is under test and improvement."
+                name="Master sequence" 
+                action="generic01 /sys/class/misc/mdnie/sequence_intercept"
+                label="Enable master sequence"/>
+
+      <checkbox description="mDNIe sharpness tweaks. Requires hook intercept and reboot to be effective."
+			name="mDNIe sharpness tweaks" action="generic01 /tmp/mdniemod" label="mDNIe Sharpness Tweaks"/>
+
+
+    </settingsPane>
+
+    <settingsPane description="Changes white colour temperature"
+		  name="White colour temperature control">
+
+      <seekBar  description="If your screen has a tint to it, this is the first control you should try to fix as it alters temperature on all channels. Starting point is 6500K."
+		name="Colour temperature"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/mcm_temperature"
+                unit="00K" min="-25" reversed="false" step="1" max="35"/>
+
+    </settingsPane>
+
+    <settingsPane description="The SCR controls is divided in 8 channels, RGB, YCM, W and K. SCR controls are RGB modifiers on each of the controls altering the primary luminosities on that channel."
+		  name="White colour balance">
+
+      <seekBar  description="Red in white"
+		name="Red"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_white_red"
+                unit="" min="-64" reversed="false" step="1" max="20"/>
+
+      <seekBar  description="Green in white"
+		name="Green"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_white_green"
+                unit="" min="-64" reversed="false" step="1" max="20"/>
+
+      <seekBar  description="Blue in white"
+		name="Blue"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_white_blue"
+                unit="" min="-64" reversed="false" step="1" max="20"/>
+
+    </settingsPane>
+
+    <settingsPane description=""
+		  name="Primary (RGB) colour channels addends">
+
+      <seekBar  description="Red in red channel"
+		name="Red in red"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_red_red"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Green in red channel"
+		name="Green in red"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_red_green"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Blue in red channel"
+		name="Blue in red"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_red_blue"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Red in green channel"
+		name="Red in green"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_green_red"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Green in green channel"
+		name="Green in green"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_green_green"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Blue in green channel"
+		name="Blue in green"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_green_blue"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Red in blue channel"
+		name="Red in blue"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_blue_red"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Green in blue channel"
+		name="Green in blue"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_blue_green"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Blue in blue channel"
+		name="Blue in blue"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_blue_blue"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+    </settingsPane>
+
+    <settingsPane description=""
+		  name="Secondary (CMYK) colour channels addends">
+
+      <seekBar  description="Red in cyan channel"
+		name="Red in cyan"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_cyan_red"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Green in cyan channel"
+		name="Green in cyan"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_cyan_green"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Blue in cyan channel"
+		name="Blue in cyan"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_cyan_blue"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Red in magenta channel"
+		name="Red in magenta"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_magenta_red"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Green in magenta channel"
+		name="Green in magenta"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_magenta_green"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Blue in magenta channel"
+		name="Blue in magenta"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_magenta_blue"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Red in yellow channel"
+		name="Red in yellow"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_yellow_red"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Green in yellow channel"
+		name="Green in yellow"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_yellow_green"
+                unit="" min="-64" reversed="false" step="1" max="32"/>
+
+      <seekBar  description="Blue in yellow channel"
+		name="Blue in yellow"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_yellow_blue"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Red in black channel"
+		name="Red in black"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_black_red"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Green in black channel"
+		name="Green in black"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_black_green"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+
+      <seekBar  description="Blue in black channel"
+		name="Blue in black"
+                action="generic-offset B /sys/class/misc/mdnie/hook_control/scr_black_blue"
+                unit="" min="-32" reversed="false" step="1" max="64"/>
+    </settingsPane>
+</settingsTab>
+<settingsTab name="Cortex Brain">
+
+	<settingsPane description="This script will manipulate many kernel settings, based on chosen NXTweaks profile + settings and screen state (ON/OFF). We call it 'CortexBrain'. To reset the kernel settings, after you disable a tweak, you must reboot!" name="CortexBrain Tweaks">
+
+		<spinner description="Enable/Disable the 'background-process' from 'CortexBrain'. If you disable it, you will lose the function that sets different settings for screen state (ON/OFF)." name="CortexBrain-Background-Process" action="cortexbrain_background_process">
+			<spinnerItem name="Enable" value="1"/> 
+			<spinnerItem name="Disable" value="0"/> 
+		</spinner>
+
+		<button description="Click to see if the 'CortexBrain-Background-Process' is running or not." name="Check Background-Process" action="push-actions/cortexbrain_background_process_check" label="Check Service"/>
+
+		<spinner description="Here, you can control Android logger 'logcat'. If you set it to AUTO, then you will have logs only when screen is on. When screen is off, logger will be disabled to save battery. If you set it to DEBUG, it will be working no matter what! If set to DISABLED, logging will be off, no matter what. If USB or wall charger is connected and logger is set to AUTO, logging will be enabled so we can debug. Depends on CortexBrain-Background-Process to be enabled! (Dynamic by Cortex)." name="Android Logger control" action="android_logger">
+			<spinnerItem name="AUTO" value="auto"/> 
+			<spinnerItem name="DEBUG" value="debug"/> 
+			<spinnerItem name="DISABLED" value="disabled"/> 
+		</spinner>
+
+		<checkbox description="Enable/Disable the 'DATA turns off while screen is off' function. Depends on CortexBrain-Background-Process to be enabled! (Dynamic by Cortex)" name="Auto-Data" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile" label="Force Auto-Data"/>
+
+		<seekBar description="Here, you can set a delay before DATA is forced to OFF when screen is turned off. Works only if 'Auto-DATA' is enabled! (Dynamic by Cortex)" name="DATA Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_mobile_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
+
+		<checkbox description="Enable or Disable the Wifi turns off while screen is off function. (Dynamic by Cortex)" name="Auto-Wifi" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi" label="Force Auto-Wifi"/>
+
+		<seekBar description="Here you can set a delay before WIFI is forced to OFF when screen is turned off. (Dynamic by Cortex)" name="WIFI Turn Off Delay (in sec)" action="generic_cortex /tmp/cortexbrain_auto_tweak_wifi_sleep_delay" unit="sec" min="0" reversed="false" step="30" max="300"/>
+
+		<checkbox description="Enable/Disable 'ICMP only Firewall-Tweaks' (reboot required)." name="Firewall-Tweaks" action="generic_cortex /tmp/cortexbrain_firewall" label="Firewall-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'TCP-Tweaks' (reboot required)." name="TCP-Tweaks" action="generic_cortex /tmp/cortexbrain_tcp" label="TCP-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'TCP-RAM-Tweaks' (reboot required)." name="TCP-RAM-Tweaks" action="generic_cortex /tmp/cortexbrain_tcp_ram" label="TCP-RAM-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'IPv6 Network' (Dynamic by Cortex)." name="IPv6 Tweaks" action="generic_cortex /tmp/cortexbrain_ipv6" label="IPv6 Network"/>
+
+		<checkbox description="Enable/Disable 'Memory-Tweaks' (reboot required)." name="Memory-Tweaks" action="generic_cortex /tmp/cortexbrain_memory" label="Memory-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'Battery-Tweaks' (reboot required)." name="Battery-Tweaks" action="generic_cortex /tmp/cortexbrain_battery" label="Battery-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'System-Tweaks' (reboot required)." name="System-Tweaks" action="generic_cortex /tmp/cortexbrain_system" label="System-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'Kernel-Tweaks' (reboot required)." name="Kernel-Tweaks" action="generic_cortex /tmp/cortexbrain_kernel_tweaks" label="Kernel-Tweaks"/>
+
+		<checkbox description="Enable/Disable 'I/O-Tweaks' (reboot required)." name="I/O-Tweaks" action="generic_cortex /tmp/cortexbrain_io" label="I/O-Tweaks"/>
+	</settingsPane>
+
+</settingsTab>
+
+
+<settingsTab name="Cron Jobs">
+
+	<settingsPane description="Here, you can activate some scripts which will automatically run in the background at a specified time." name="cron">
+
+		<spinner description="Main switch for Cron Tasker. If you set this to OFF, then all tasks listed below will have no effect!" name="CRON TASK MAIN SWITCH" action="crontab">
+			<spinnerItem name="Cron ON" value="on"/> 
+			<spinnerItem name="Cron OFF" value="off"/> 
+		</spinner>
+
+		<button description="Use this button to test if the 'Cron Task service' is ONLINE and supported! If main switch is ON and service is OFFLINE, then ROM BusyBox does not support Cron. Update BusyBox or ROM in order for this to work." name="Test Cron Task Service" action="push-actions/crontab_test" label="Test Cron Task Service"/>
+
+		<button description="Use this button to RESET the scripts and jobs from kernel, to refresh the configuration. This will clear all your custom changes!" name="CRON RESET" action="push-actions/crontab_reset" label="Reset Cron"/>
+
+		<checkbox description="Cron to clear RAM cache every hour, but only if CPU is IDLE and more than 50% of your memory is used! This will free RAM from unused buffers and cache." name="Clean RAM cache" action="generic_cortex /tmp/cron_drop_cache" label="Clear RAM cache every hour"/>
+
+		<checkbox description="Cron to update Ad-Blocker every Saturday at 6:00AM UTC time, from official website. The script will check if you are connected to the Internet via mobile data, otherwise it will try to use Wi-Fi. The script will turn Wi-Fi on, wait for connection, update and once it's finished it will turn Wi-Fi off. If there's no connection, an error will be written in the log." name="Update Ad-Blocker" action="generic_cortex /tmp/ad_block_update" label="Update Ad-Blocker every week"/>
+
+		<checkbox description="Cron to DB Optimize every day at 3:00AM, only if CPU is IDLE!" name="DB Optimization" action="generic_cortex /tmp/cron_db_optimizing" label="DB Optimization task every day at 3:00AM"/>
+
+		<checkbox description="Cron to clear app-cache every day at 4:00AM, only if CPU is IDLE!" name="Clean app-cache" action="generic_cortex /tmp/cron_clear_app_cache" label="Disk Clean task every day at 4:00AM"/>
+
+		<checkbox description="Cron to fix app-permissions every day at 4:40AM, only if CPU is IDLE! This can help to reduce errors, bugs, and applications FC." name="Fix app-permissions" action="generic_cortex /tmp/cron_fix_permissions" label="Fix permissions every day at 4:40AM"/>
+
+		<checkbox description="Cron to ZipAlign apps every day at 4:50AM, only if CPU is IDLE! This can help reduce errors, bugs, applications FC and improve applications load speed. WARNING! Backup all apps before use! This process will remove apps that are BROKEN and not compressed or compiled correctly, so you may find some apps missing! USE IT AT YOUR OWN RISK and update the broken applications!" name="ZipAlign Task" action="generic_cortex /tmp/cron_zipalign" label="ZipAlign Task every day at 4:50AM"/>
+
+		<button description="Use this button to check if Cron Task Jobs are done as requested. This will show the log for all finished jobs." name="Test Cron Task jobs" action="push-actions/crontab_log" label="Test Cron Task Jobs"/>
+
+	</settingsPane>
+
+</settingsTab>
+
+
+<settingsTab name="Tweaks">
+
+	<settingsPane description="INIT.D" name="INIT.D">
+
+		<checkbox description="Enable/Disable INIT.D scripts to run on boot. Many new ROMs are running the init.d scripts automatically. You can also force running the scripts, but if you run them and ROM runs them too, we have a problem: all scripts are running twice! To avoid conflicts, NXTweaks RUN-control is disabled by default. If you know that your ROM does NOT support init.d scripts running, then turn it ON here and reboot." name="INIT.D Scripts RUN control" action="generic_cortex /tmp/init_d" label="Enable INIT.D scripts RUN control"/>
+
+	</settingsPane>
+
+	<settingsPane description="USB and SDcard settings and options." name="USB - SDcard">
+
+		<spinner description="Change USB connection mode. Either leave it as default or force it to UMS (USB Mass Storage mode) - you will see your SDcards as disks - or MTP (Media Transfer Protocol)." name="USB Mass Storage mode" action="usb-mode">
+			<spinnerItem name="Default" value="default"/> 
+			<spinnerItem name="Force UMS Mode" value="mass_storage-adb"/> 
+			<spinnerItem name="Force MTP Mode" value="mtp-adb"/> 
+		</spinner>
+
+		<checkbox description="If checked, mass storage SDcards will be auto-mounted when USB is connected. Then, you can transfer files at high speeds from computer to device. (Default: Off)" name="Auto Mount USB Drives" action="generic_cortex /tmp/auto_mount_sd" label="Auto Mount USB Drives"/>
+
+		<button description="Dual Mount SDcard and MMC via USB. Once the USB is disconnected, Dual Mount is disabled! This tweak is working automatically. Plug in the USB cable, turn off the screen, turn it on and you get working mounts. To scan your new MEDIA files, use some app to force Media Scan." name="DUAL MOUNT" action="push-actions/dualmount" label="Dual Mount"/>
+
+	</settingsPane>
+
+
+	<settingsPane description="Android Additional Logs" name="Logger">
+
+		<checkbox description="Enable/Disable Android Additional Logs (requires reboot)" name="Android Logger" action="generic_cortex /tmp/logger" label="Android Logger"/>
+
+	</settingsPane>
+
+	<settingsPane description="Quick Tweaks" name="Quick Tweaks">
+
+		<checkbox description="Frandom is a Linux kernel random number generator which is 10-50 times faster than what you get from Linux built-in /dev/urandom. In case you face issue with wifi tethering you may try disabling this option and reboot. (Reboot required)" name="FRANDOM" action="generic_cortex /tmp/frandom_module" label="FRANDOM"/>
+
+		<spinner description="Maximum number of kilobytes to read-ahead for external SDcard file systems on this device. It is best to leave it to AUTO, then script will detect your external SDcard size and set the best value for it! The internal SDcard will get 1024kB as default and best for 16GB storage. Works only if 'I/O-Tweaks' is enabled! (Default: 128 kB)" name="kilobytes to read-ahead" action="generic_cortex /tmp/cortexbrain_read_ahead_kb">
+			<spinnerItem name="AUTO" value="0"/> 
+			<spinnerItem name="128 kB" value="128"/> 
+			<spinnerItem name="256 kB" value="256"/> 
+			<spinnerItem name="512 kB" value="512"/> 
+			<spinnerItem name="1024 kB" value="1024"/> 
+			<spinnerItem name="2048 kB" value="2048"/> 
+			<spinnerItem name="2560 kB" value="2560"/> 
+		</spinner>
+
+		<button description="Clean Wi-Fi DHCP IP Lease. Push the button to activate!" name="Clean Wi-Fi Lease" action="push-actions/fix_wifi" label="Clean Wi-Fi Lease"/>
+
+	</settingsPane>
+	<settingsPane description="Here, you can find some settings/options for your apps." name="Apps">
+
+		<button description="Click here to start fixing. Here, you can run Fix Permissions. Please click one time only; scripts will finish in max 2~3min; no reboot is required." name="FIX PERMISSIONS" action="push-actions/fix_permissions" label="Fix Permissions"/>
+
+		<button description="Click here to start ZipAligning ONLY user apps. System may be unresponsive - it's OK, do not use the phone for ~2 minutes. WARNING! Backup all user applications before use! This process will remove applications that are BROKEN and not compressed or compiled correctly, so you may find some apps missing. USE IT AT YOUR OWN RISK and update the broken applications!." name="ZIPALIGN" action="push-actions/zipalign" label="ZipAlign All Apps"/>
+
+		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2 minutes." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="Optimize DB"/>
+
+	</settingsPane>
+
+
+	<settingsPane description="Here, you can add/update/remove Ad-Blocker! If you want to update or add the ad-blocker you can push the 'Update/Add AD-B' button to get the new one installed! If you install a new ROM and want to use Ad-Blocker, then tap the button again. If you need to remove Ad-Blocker use the 'Remove AD-B' button and reboot."
+			name="Ad-Blocker">
+
+		<button description="ADD/UPDATE AD-BLOCKER" name="AD-B UPDATE/ADD" action="push-actions/ad_update" label="Update/Add AD-B"/>
+
+		<button description="REMOVE AD-BLOCKER" name="AD-B REMOVE" action="push-actions/ad_restore" label="Remove AD-B"/>
+
+	</settingsPane>
+
+
+	<settingsPane description="Here, you can find GPS and NTP settings." name="GPS - NTP">
+
+		<spinner description="GPS Time Zone for faster GPS lock! Choose your region!" 
+			name="GPS REGION" action="gpsregion">
+			<spinnerItem name="No GPS Zone changes (default)" value="No_GPS_Zone_changes"/> 
+			<spinnerItem name="Set Asia" value="Asia"/> 
+			<spinnerItem name="Set Europe" value="Europe"/> 
+			<spinnerItem name="Set Oceania" value="Oceania"/> 
+			<spinnerItem name="Set North America" value="North-America"/> 
+			<spinnerItem name="Set South America" value="South-America"/> 
+			<spinnerItem name="Set Africa" value="Africa"/> 
+			<spinnerItem name="Restore original ROM gps.conf" value="Original_ROM_GPS_Restored"/> 
+		</spinner>
+
+		<button description="Click to see your current GPS Zone" name="GPS ZONE" action="push-actions/gpszonecheck" label="GPS Zone Check"/>
+
+		<button description="Update time via NTP server" name="UPDATE TIME" action="push-actions/time_update" label="Update Time"/>
+
+	</settingsPane>
+	
+</settingsTab>
+<settingsTab name="Modules">
+
+	<settingsPane description="Here, you can load kernel modules on boot that will allow some extra functions." name="Kernel Modules">
+
+		<checkbox description="Enable/Disable Samsung J4FS module load on boot. SMDK4210 tree had this module auto-load on boot but removed from exynos4 tree." name="J4FS Module" action="generic_cortex /tmp/j4fs_module" label="J4FS Module"/>
+
+		<checkbox description="Enable/Disable USB to Serial Modules. This will allow you to use USB to serial adapter to connect to ROUTERS and SWITCHES via console port. Requires reboot to become effective!" name="USB to Serial" action="generic_cortex /tmp/usbserial_module" label="Usb to Serial Modules"/>
+
+		<checkbox description="Enable/Disable USB to Network Module This will allow you to use a limited number of USB to network card adapters. No support and no info can be provided if it will work. Requires reboot to become effective!" name="USB to NetStick" action="generic_cortex /tmp/usbnet_module" label="USB to Net Stick"/>
+
+		<checkbox description="Enable/Disable CIFS Module. This will allow you to use apps that can mount internal storage and share over network. User can access data and system over network. No support can be provided. Requires reboot to become effective!" name="CIFS Module" action="generic_cortex /tmp/cifs_module" label="CIFS Module"/>
+
+		<checkbox description="Enable/Disable EDS Module (Encrypted Data Store). This lets you store your files in an encrypted container to prevent unauthorized access to sensitive information. If you want to use this, you need the EDS app from Play Store." name="EDS Module" action="generic_cortex /tmp/eds_module" label="EDS Module"/>
+
+		<checkbox description="Experimental: XBOX 360 wired controller support. This is experimental, please provide feedback on its functionality. Requires reboot to become effective!" name="XPAD Module" action="generic_cortex /tmp/xpad_module" label="XPAD Module"/>
+
+		<button description="This displays the currently loaded modules." name="Show Loaded Modules" action="push-actions/show_modules" label="Show Loaded Modules"/>
+
+		<button description="This button tries to force-load selected modules in the memory without requiring a reboot. This may not help, because most modules requires a reboot. This button is primarily for testing purposes." name="Force-Load Modules" action="push-actions/load_modules" label="Force-Load Modules"/>
+
+	</settingsPane>
+
+</settingsTab>
+<settingsTab name="Profiles">
+
+	<settingsPane description="Here, you can check what profile is being used right now." name="Online Profile">
+
+		<button description="This displays your currently used profile." name="Profile Check" action="push-actions/profile" label="Profile Check"/>
+
+	</settingsPane>
+
+	<settingsPane description="Here, you can choose from other profiles. If the phone freezes, let your device reboot itself within 2 min." name="NXTweaks Profiles">
+
+		<button description="This profile attempts to save battery whenever possible and it is recommended to use this profile whenever you are in need for battery for long time." name="Extreme Battery Profile" action="push-actions/config_backup_restore 6" label="Extreme Battery"/>
+
+		<button description="This profile attempts to save battery by using power saving configuration parameters." name="Battery Profile" action="push-actions/config_backup_restore 3" label="Battery"/>
+
+		<button description="This is the default profile, set to have balance between power saving and performance. This profile is recommended for users with not too many apps installed and moderate usage." name="Default Profile" action="push-actions/config_backup_restore 4" label="Default"/>
+
+		<button description="This profile may give you very good performance but at the cost of some battery juice. Great profile for gamers with light games and for users having too many apps." name="Performance Profile" action="push-actions/config_backup_restore 5" label="Performance"/>
+
+		<button description="This profile may give you great performance but is heavy on battery. Great profile for gamers with intensive graphics games like Arcane Legends, Blitz Brigade etc. Chipset might overheat while this profile is active." name="Extreme Performance Profile" action="push-actions/config_backup_restore 7" label="Extreme Performance"/>
+
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Backup/Restore">
+
+	<settingsPane description="Here, you can backup/restore your profile after installing new kernel. When you restore your configuration, please wait until this app restarts with the new settings. Some settings will work only after reboot! Restore will take up to 30 seconds, just wait!" name="NXTweaks Settings Backup/Restore">
+
+		<button description="Backup NXTweaks User Settings!" name="Settings Backup" action="push-actions/config_backup_restore 1" label="Backup"/>
+
+		<button description="Restore NXTweaks User Settings!" name="Settings Restore" action="push-actions/config_backup_restore 2" label="Restore"/>
+
+	</settingsPane>
+</settingsTab>
+
+<settingsTab name="Bug-Report">
+
+	<settingsPane description="Debug to SD-Card 'sdcard'" name="Bug-Report">
+
+		<button description="Bug-Report for different kernel parameters like LMK, Schedulers, etc." name="Kernel-Config-Debug" action="push-actions/debug_to_sd 1" label="Kernel-Config-Debug"/>
+
+		<button description="Bug-Report for apps using logcat" name="App-Debug" action="push-actions/debug_to_sd 2" label="Apps-Debug"/>
+
+	<button description="Bug-Report after kernel crash. Use this to report SODs (sleep of deaths) or random restarts; if you had to press the power key for 7 seconds to reset or after a random reboot. In case the phone lost power, there will be no log. Upload log to forum. We may try to get it resolved." name="LAST-KERNEL-LOG" action="push-actions/debug_to_sd 3" label="Last-Kernel-Log"/>
+
+	</settingsPane>
+
+	<settingsPane description="Show Storage status. Here, you can see if you have errors in system, data, cache, efs or preload partitions. This will only SHOW if whether everything is OK or not, not fix errors!" name="Partitions Scan">
+
+		<button description="Use this to check your system, data, cache, efs and preload partitions for errors. This will not FIX any errors, just check! To fix, backup your files with apps like Titanium Backup, then push the FIX DATA button. USE IT AT YOUR OWN RISK! Some data will be lost! You will need to restore broken apps + data. In case of boot loop, reinstall ROM. If you are still stuck on boot, perform a full wipe and install the ROM again! It's BETTER to have a clean partition than broken and unstable system, naturally." name="Partition Status" action="push-actions/partitions_scan" label="Partition Status"/>
+
+		<button description="Clean the media cache on your SDcard and start media rescan. Use at your own discretion. RESCAN MAY TAKE HOURS TO COMPLETE. Manual reboot is recommended." name="Clean media cache" action="push-actions/fix_media" label="Clean media cache"/>
+
+		<button description="DATA and CACHE file systems check and repair on boot. !WARNING! This is a VERY DANGEROUS operation! Before activating it MAKE A NANDROID BACKUP and backup your apps with Titanium Backup or similar applications! If you have a high ammount of damage in the DATA partition, after fix and repair, ROM may NOT BOOT anymore! In that case, reinstall ROM; if you still can't boot, you will have to format the DATA partition via recovery! USE IT AT YOUR OWN RISK! THIS FUNCTION IS NOT A TOY! YOU HAVE BEEN WARNED! It's a one time action, push the button to activate, push again to abort!" name="FIX File System on BOOT" action="push-actions/fix_fs_on_boot" label="Fix Data ON/OFF"/>
+
+		<button description="Root check. Click to see if you have ROOT or not." name="ROOT Check" action="push-actions/root_check" label="Root Check"/>
+	</settingsPane>
+
+</settingsTab>
+
+</settingsRoot>

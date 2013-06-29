@@ -1,0 +1,8 @@
+#!/sbin/busybox sh
+
+lsmod > /data/.nx_modules 2>&1;
+LMOD=`cat /data/.nx_modules`;
+echo "Loaded Modules:";
+echo " ";
+echo "$LMOD";
+rm -f /data/.nx_modules > /dev/null 2>&1;

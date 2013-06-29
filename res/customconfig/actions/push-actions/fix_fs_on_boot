@@ -1,0 +1,14 @@
+#!/sbin/busybox sh
+
+mount -o remount,rw /system;
+
+fixFS="/system/run_fs_check";
+
+if [ ! -e $fixFS ]; then
+	echo "fix fs" > $fixFS;
+	echo "Activated! Do Titanium-Backup before reboot, just in case!";
+else
+	rm -f $fixFS;
+	echo "ABORT, ABORT, ABORT!"
+fi;
+
