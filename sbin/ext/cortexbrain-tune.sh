@@ -143,15 +143,15 @@ KERNEL_TWEAKS()
 		if [ "$state" == "awake" ]; then
 			echo "0" > /proc/sys/vm/oom_kill_allocating_task;
 			echo "0" > /proc/sys/vm/panic_on_oom;
-			echo "60" > /proc/sys/kernel/panic;
+			echo "120" > /proc/sys/kernel/panic;
 		elif [ "$state" == "sleep" ]; then
 			echo "0" > /proc/sys/vm/oom_kill_allocating_task;
 			echo "0" > /proc/sys/vm/panic_on_oom;
-			echo "30" > /proc/sys/kernel/panic;
+			echo "90" > /proc/sys/kernel/panic;
 		else
 			echo "0" > /proc/sys/vm/oom_kill_allocating_task;
 			echo "0" > /proc/sys/vm/panic_on_oom;
-			echo "60" > /proc/sys/kernel/panic;
+			echo "120" > /proc/sys/kernel/panic;
 		fi;
 
 		if [ "$cortexbrain_memory" == on ]; then
