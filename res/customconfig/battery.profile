@@ -63,7 +63,6 @@ GPUTHRESHOLD4UP=80
 GPUTHRESHOLD5DOWN=70
 crontab=off
 cron_drop_cache=off
-ad_block_update=off
 cron_db_optimizing=off
 cron_clear_app_cache=off
 cron_fix_permissions=off

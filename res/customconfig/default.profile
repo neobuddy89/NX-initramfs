@@ -68,7 +68,6 @@ sound_volume2=0
 sound_volume3=0
 crontab=on
 cron_drop_cache=off
-ad_block_update=off
 cron_db_optimizing=on
 cron_clear_app_cache=off
 cron_fix_permissions=on

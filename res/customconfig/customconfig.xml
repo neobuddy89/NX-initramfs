@@ -565,8 +565,6 @@
 
 		<checkbox description="Cron to clear RAM cache every hour, but only if CPU is IDLE and more than 50% of your memory is used! This will free RAM from unused buffers and cache." name="Clean RAM cache" action="generic_cortex /tmp/cron_drop_cache" label="Clear RAM cache every hour"/>
 
-		<checkbox description="Cron to update Ad-Blocker every Saturday at 6:00AM UTC time, from official website. The script will check if you are connected to the Internet via mobile data, otherwise it will try to use Wi-Fi. The script will turn Wi-Fi on, wait for connection, update and once it's finished it will turn Wi-Fi off. If there's no connection, an error will be written in the log." name="Update Ad-Blocker" action="generic_cortex /tmp/ad_block_update" label="Update Ad-Blocker every week"/>
-
 		<checkbox description="Cron to DB Optimize every day at 3:00AM, only if CPU is IDLE!" name="DB Optimization" action="generic_cortex /tmp/cron_db_optimizing" label="DB Optimization task every day at 3:00AM"/>
 
 		<checkbox description="Cron to clear app-cache every day at 4:00AM, only if CPU is IDLE!" name="Clean app-cache" action="generic_cortex /tmp/cron_clear_app_cache" label="Disk Clean task every day at 4:00AM"/>
@@ -637,17 +635,6 @@
 		<button description="Click here to start applications Database Optimization. Compacting, cleaning and indexing will take max 2 minutes." name="DB OPTIMIZATION" action="push-actions/database_optimizing" label="Optimize DB"/>
 
 	</settingsPane>
-
-
-	<settingsPane description="Here, you can add/update/remove Ad-Blocker! If you want to update or add the ad-blocker you can push the 'Update/Add AD-B' button to get the new one installed! If you install a new ROM and want to use Ad-Blocker, then tap the button again. If you need to remove Ad-Blocker use the 'Remove AD-B' button and reboot."
-			name="Ad-Blocker">
-
-		<button description="ADD/UPDATE AD-BLOCKER" name="AD-B UPDATE/ADD" action="push-actions/ad_update" label="Update/Add AD-B"/>
-
-		<button description="REMOVE AD-BLOCKER" name="AD-B REMOVE" action="push-actions/ad_restore" label="Remove AD-B"/>
-
-	</settingsPane>
-
 
 	<settingsPane description="Here, you can find GPS and NTP settings." name="GPS - NTP">
 
