@@ -277,30 +277,6 @@ MEMORY_TWEAKS()
 MEMORY_TWEAKS;
 
 # ==============================================================
-# ENTROPY-TWEAKS
-# ==============================================================
-
-ENTROPY()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		if [ "$PROFILE" != "battery" ] || [ "$PROFILE" != "extreme_battery" ]; then
-			echo "256" > /proc/sys/kernel/random/read_wakeup_threshold;
-			echo "512" > /proc/sys/kernel/random/write_wakeup_threshold;
-		else
-			echo "128" > /proc/sys/kernel/random/read_wakeup_threshold;
-			echo "128" > /proc/sys/kernel/random/write_wakeup_threshold;
-		fi;
-	elif [ "$state" == "sleep" ]; then
-		echo "128" > /proc/sys/kernel/random/read_wakeup_threshold;
-		echo "128" > /proc/sys/kernel/random/write_wakeup_threshold;
-	fi;
-
-	log -p i -t $FILE_NAME "*** ENTROPY ***: $state - $PROFILE";
-}
-
-# ==============================================================
 # TCP-TWEAKS
 # ==============================================================
 TCP_TWEAKS()
@@ -572,41 +548,6 @@ MALI_TIMEOUT()
 	log -p i -t $FILE_NAME "*** MALI_TIMEOUT: $state ***";
 }
 
-BUS_THRESHOLD()
-{
-	local state="$1";
-
-	if [ "$state" == "awake" ]; then
-		echo "$busfreq_up_threshold" > /sys/devices/system/cpu/cpufreq/busfreq_up_threshold;
-	elif [ "$state" == "sleep" ]; then
-		echo "30" > /sys/devices/system/cpu/cpufreq/busfreq_up_threshold;
-	elif [ "$state" == "wake_boost" ]; then
-		echo "23" > /sys/devices/system/cpu/cpufreq/busfreq_up_threshold;
-	fi;
-
-	log -p i -t $FILE_NAME "*** BUS_THRESHOLD: $state ***";
-}
-
-VFS_CACHE_PRESSURE()
-{
-	local state="$1";
-	local sys_vfs_cache="/proc/sys/vm/vfs_cache_pressure";
-
-	if [ -e $sys_vfs_cache ]; then
-		if [ "$state" == "awake" ]; then
-			echo "200" > $sys_vfs_cache;
-		elif [ "$state" == "sleep" ]; then
-			echo "100" > $sys_vfs_cache;
-		fi;
-
-		log -p i -t $FILE_NAME "*** VFS_CACHE_PRESSURE: $state ***";
-
-		return 0;
-	fi;
-
-	return 1;
-}
-
 # set swappiness in case that no root installed, and zram used or disk swap used
 SWAPPINESS()
 {
@@ -753,7 +694,7 @@ IO_SCHEDULER()
 CPU_AUTOPLUG()
 {
 	local state="$1";
-	local cpu_mode="Inactive";
+	local cpu_mode="Disabled";
 	if [ "$cortexbrain_autoplug" == on ]; then
 		if [ "$state" == "awake" ]; then
 			cpu_mode="Dynamic";
@@ -838,17 +779,13 @@ AWAKE_MODE()
 			LOGGER "awake";
 			UKSMCTL "awake";
 			MALI_TIMEOUT "wake_boost";
-			BUS_THRESHOLD "wake_boost";
 			KERNEL_TWEAKS "awake";
 			NET "awake";
 			MOBILE_DATA "awake";
 			WIFI "awake";
 			IO_SCHEDULER "awake";
-			ENTROPY "awake";
-			VFS_CACHE_PRESSURE "awake";
 			CPU_AUTOPLUG "awake";
 			MALI_TIMEOUT "awake";
-			BUS_THRESHOLD "awake";
 		else
 			# Was powered by USB, and half sleep
 			ENABLEMASK "awake";
@@ -908,14 +845,11 @@ SLEEP_MODE()
 		if [ "$CHARGING" -eq "0" ]; then
 			CPU_GOVERNOR "sleep";
 			IO_SCHEDULER "sleep";
-			BUS_THRESHOLD "sleep";
 			UKSMCTL "sleep";
-			ENTROPY "sleep";
 			NET "sleep";
 			WIFI "sleep";
 			MOBILE_DATA "sleep";
 			IPV6;
-			VFS_CACHE_PRESSURE "sleep";
 			KERNEL_TWEAKS "sleep";
 
 			log -p i -t $FILE_NAME "*** SLEEP mode ***";
