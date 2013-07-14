@@ -17,6 +17,7 @@
 			<spinnerItem name="Hyper" value="HYPER"/> 
 			<spinnerItem name="NeoX" value="NeoX"/>
 			<spinnerItem name="Zzmoove" value="zzmoove"/>
+			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Lulzactiveq" value="lulzactiveq"/>
 			<spinnerItem name="IntelliDemand" value="intellidemand"/>
 			<spinnerItem name="Nightmare" value="nightmare"/>
@@ -35,6 +36,7 @@
 			<spinnerItem name="Hyper" value="HYPER"/> 
 			<spinnerItem name="NeoX" value="NeoX"/>
 			<spinnerItem name="Zzmoove" value="zzmoove"/>
+			<spinnerItem name="Interactive" value="interactive"/>
 			<spinnerItem name="Lulzactiveq" value="lulzactiveq"/>
 			<spinnerItem name="IntelliDemand" value="intellidemand"/>
 			<spinnerItem name="Nightmare" value="nightmare"/>
