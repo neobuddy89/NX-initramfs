@@ -172,19 +172,19 @@
 			name="GPU Voltage Levels">
 
 		<seekBar description="GPU voltage for the first step" 
-			name="GPU Voltage Level 1" action="gpu-voltage 1" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+			name="GPU Voltage Level 1" action="gpu-voltage 1" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
 		<seekBar description="GPU voltage for the second step" 
-			name="GPU Voltage Level 2" action="gpu-voltage 2" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+			name="GPU Voltage Level 2" action="gpu-voltage 2" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
 		<seekBar description="GPU voltage for the third step" 
-			name="GPU Voltage Level 3" action="gpu-voltage 3" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+			name="GPU Voltage Level 3" action="gpu-voltage 3" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
 		<seekBar description="GPU voltage for the fourth step" 
-			name="GPU Voltage Level 4" action="gpu-voltage 4" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+			name="GPU Voltage Level 4" action="gpu-voltage 4" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
 		<seekBar description="GPU voltage for the fifth step" 
-			name="GPU Voltage Level 5" action="gpu-voltage 5" unit="mV" min="850" reversed="false" step="50" max="1300"/>
+			name="GPU Voltage Level 5" action="gpu-voltage 5" unit="mV" min="800" reversed="false" step="50" max="1300"/>
 
 	</settingsPane>
 
@@ -280,19 +280,19 @@
 
 </settingsTab>
 
-<settingsTab name ="Charging Currents Control">
-<settingsPane description="Here, you can set the current intensity (measured in milliamperes) you want your phone to take in while charging. Allowed mA, by default, is between 450 mA and 650 mA! Remember: higher currents *could potentially* reduce battery life over time. So, the higher the currents = more chances your battery life will decay during a period of time. The lower the currents = less chances your battery will decay during that period of time. Set currents higher WHEN AND IF you need your phone to charge faster. Turn currents down to 450 mA when you are charging overnight. Charging at 1000 mA will take 2 hours and 30 minutes. Charging at 450 mA will take up to 6 hours." name="Battery Charge">
+<settingsTab name ="Charging Control">
+<settingsPane description="Here, you can set the current intensity (measured in milliamperes) you want your phone to take in while charging. Allowed mA, by default, is between 450 mA and 650 mA! Remember: higher current *could potentially* reduce battery life over time. So, the higher the current = more chances your battery life will decay during a period of time. The lower the current = less chances your battery will decay during that period of time. Set current higher WHEN AND IF you need your phone to charge faster. Turn current down to 450 mA when you are charging overnight. Charging at 1000 mA will take 2 hours and 30 minutes. Charging at 450 mA will take up to 6 hours." name="Battery Charge">
 
-		<seekBar description="AC (wall) charger currents" 
-			name="AC (wall) charge currents" action="chargecurrent 1" 
+		<seekBar description="AC (wall) charger current" 
+			name="AC (wall) charge current" action="chargecurrent 1" 
                         unit="mA" min="450" reversed="false" step="50" max="1000"/>
 
-		<seekBar description="MISC charge currents" 
+		<seekBar description="MISC charge current" 
 			name="MISC charge Current" action="chargecurrent 2" 
 			unit="mA" min="450" reversed="false" step="50" max="1000"/>
 
-		<seekBar description="USB charge currents" 
-			name="USB charge currents" action="chargecurrent 3" 
+		<seekBar description="USB charge current" 
+			name="USB charge current" action="chargecurrent 3" 
 			unit="mA" min="450" reversed="false" step="50" max="1000"/>
 
 		<button description="If you think that the fuel gauge chip is behaving weird, use this button to reset it. Afterwards, give it a few hours to stabilize. It may still show you funny values until it settles, but once it settled, the battery percentage should be fine." name="Reset Fuel-Gauge Chip" action="push-actions/reset-fuelgauge" label="Reset Fuel-Gauge Chip"/>
